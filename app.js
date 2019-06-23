@@ -1,26 +1,34 @@
-var express = require('express');
 const mongoose = require('mongoose');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const createError = require('http-errors');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+const passport = require('passport');
+// configs
 require('./configs/db.config');
+require('./configs/passport.config');
+const session = require('./configs/session.config')
+const cors = require('./configs/cors.config')
 
-var app = express();
-
+// initializing express...
+const app = express();
+// middlewares
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// authentication middlewares
+app.use(cors)
+app.use(session)
+app.use(passport.initialize())
+app.use(passport.session())
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// routers
+const authRouter = require('./routes/auth.routes');
+app.use('/', authRouter);
 
+// Handling errors
 app.use((req, res, next) => {
   next(createError(404))
 })
