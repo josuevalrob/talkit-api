@@ -26,7 +26,10 @@ app.use(passport.session())
 
 // routers
 const authRouter = require('./routes/auth.routes');
+const userRouter = require('./routes/users.routes');
+
 app.use('/', authRouter);
+app.use('/user', userRouter);
 
 // Handling errors
 app.use((req, res, next) => {

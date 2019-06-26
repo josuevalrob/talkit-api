@@ -34,6 +34,18 @@ module.exports.authenticate = (req, res, next) => {
   })(req, res, next);
 }
 
+module.exports.update = (req, res, next) => {
+  delete req.body.email; //never update the mail. 
+  const user = req.user;
+  Object.assign(user, req.body); //<-
+  // if (req.file) user.avatarURL = req.file.secure_url;
+  user.save()
+    .then(user => res.status(204).json(user))
+    .catch(error => {
+      next(error);
+    });
+}
+
 module.exports.logout = (req, res, next) => {
   req.logout();
   res.status(204).json();
