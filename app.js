@@ -10,6 +10,9 @@ require('./configs/db.config');
 require('./configs/passport.config');
 const session = require('./configs/session.config')
 const cors = require('./configs/cors.config')
+// routers
+const authRouter = require('./routes/auth.routes');
+const userRouter = require('./routes/users.routes');
 
 // initializing express...
 const app = express();
@@ -23,10 +26,6 @@ app.use(cors)
 app.use(session)
 app.use(passport.initialize())
 app.use(passport.session())
-
-// routers
-const authRouter = require('./routes/auth.routes');
-const userRouter = require('./routes/users.routes');
 
 app.use('/', authRouter);
 app.use('/user', userRouter);

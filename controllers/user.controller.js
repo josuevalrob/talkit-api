@@ -1,5 +1,5 @@
-const User = require('../models/user.model');
 const Friend = require('../models/friends.model')
+const User = require('../models/user.model');
 
 const createError = require('http-errors');
 
@@ -33,9 +33,8 @@ module.exports.addFriend = (req, res, next) => {
     requester: req.user._id,
     recipient: req.body.recID,
   }).save()
-    .then(()=>{
-      console.log('inside the then... ')
-      res.status(204)
+    .then((friendship)=>{
+      res.status(201).json(friendship)
     })
     .catch(next)
 }
@@ -45,9 +44,10 @@ module.exports.pendingFriends = (req, res, next) => {
     .populate('requester')
     .then(friends => { 
       if(friends.length){
+        console.log('we found something..')
         res.json(friends.map(f => f.requester))
       } else {
-        res.status(404).json({message:'No pending Friends'})
+        res.status(404).json({message:"Don't pannic, everything is ookey. . ."})
       }
     })
     .catch(next)
@@ -58,8 +58,8 @@ module.exports.acceptFriend = (req, res, next) => {
     requester: req.body.recID, 
     recipient: req.user._id,
     accepted: false
-  }, {accepted: true})
-    .then(()=>res.status(204))
+  }, {accepted: true}, {useFindAndModify: false})
+    .then((friendship)=>res.status(204).json(friendship))
     .catch(next)
 
 }
