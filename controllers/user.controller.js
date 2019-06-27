@@ -1,5 +1,5 @@
 const User = require('../models/user.model');
-const Friend = require('../models/user.model')
+const Friend = require('../models/friends.model')
 
 const createError = require('http-errors');
 
