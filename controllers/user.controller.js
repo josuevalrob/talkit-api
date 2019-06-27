@@ -1,4 +1,3 @@
-const Friend = require('../models/friends.model')
 const User = require('../models/user.model');
 
 const createError = require('http-errors');
@@ -22,54 +21,4 @@ module.exports.profile = (req, res, next) => {
       }
     })
     .catch(next)  
-}
-
-module.exports.addFriend = (req, res, next) => {
-  //! Validar que la relación no exista. 
-  //! Validar que no sea un usuario bloqueado
-  //? Friend.findOne({ $or: ... })
-  console.log('adding friend')
-  new Friend({
-    requester: req.user._id,
-    recipient: req.body.recID,
-  }).save()
-    .then((friendship)=>{
-      res.status(201).json(friendship)
-    })
-    .catch(next)
-}
-module.exports.pendingFriends = (req, res, next) => {
-  //* Busco usuarios que me han pedido ser amigo suyo 
-  Friend.find({recipient: req.user._id, accepted: false})
-    .populate('requester')
-    .then(friends => { 
-      if(friends.length){
-        console.log('we found something..')
-        res.json(friends.map(f => f.requester))
-      } else {
-        res.status(404).json({message:"Don't pannic, everything is ookey. . ."})
-      }
-    })
-    .catch(next)
-}
-module.exports.acceptFriend = (req, res, next) => {
-  //* desde mis peticiones pendientes, acepto a mis requesters
-  Friend.findOneAndUpdate({
-    requester: req.body.recID, 
-    recipient: req.user._id,
-    accepted: false
-  }, {accepted: true}, {useFindAndModify: false})
-    .then((friendship)=>res.status(204).json(friendship))
-    .catch(next)
-
-}
-module.exports.rejectFriend = (req, res, next) => {
-  //* desde mis peticiones pendientes, elimino a mis requesters
-  Friend.findOneAndDelete({
-    requester: req.body.recID, 
-    recipient: req.user._id,
-    accepted: false
-  })
-    .then(()=>res.status(204))
-    .catch(next)
 }

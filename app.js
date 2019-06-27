@@ -10,13 +10,15 @@ require('./configs/db.config');
 require('./configs/passport.config');
 const session = require('./configs/session.config')
 const cors = require('./configs/cors.config')
+
 // routers
 const authRouter = require('./routes/auth.routes');
 const userRouter = require('./routes/users.routes');
-
+const friendRouter = require('./routes/friendShip.routes');
 // initializing express...
 const app = express();
 // middlewares
+const secure = require('./middlewares/secure.mid');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +30,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/', authRouter);
+app.use('/friend', secure.isAuthenticated, friendRouter)
 app.use('/user', userRouter);
 
 // Handling errors
