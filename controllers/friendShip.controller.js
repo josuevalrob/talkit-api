@@ -28,7 +28,8 @@ module.exports.pendingFriends = (req, res, next) => {
 }
 module.exports.acceptFriend = (req, res, next) => {
   //* from my pending request, accept your new friend
-  Friend.findOneAndUpdate({
+  //? can i search by id 
+  Friend.findOneAndUpdate({ 
     requester: req.body.recID, 
     recipient: req.user._id,
     accepted: false
