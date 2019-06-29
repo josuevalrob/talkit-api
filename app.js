@@ -15,6 +15,9 @@ const cors = require('./configs/cors.config')
 const authRouter = require('./routes/auth.routes');
 const userRouter = require('./routes/users.routes');
 const friendRouter = require('./routes/friendShip.routes');
+
+const classRoomRouter = require('./routes/classRoom.routes');
+const unityRouter = require('./routes/unity.routes');
 // initializing express...
 const app = express();
 // middlewares
@@ -30,10 +33,18 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use('/', authRouter);
-app.use('/friend', secure.isAuthenticated, friendRouter)
-app.use('/user', userRouter);
+app.use('/users', userRouter);
+app.use('/friends', secure.isAuthenticated, friendRouter)
+app.use('/class-rooms', classRoomRouter);
+// app.use('/class-rooms/:classRoomId/unities', unityRouter);
+// ? cuando este listo firebase. 
+// app.use('/unities/:unityId/messages', messageRouter);
 
-// Handling errors
+
+
+
+
+//* Handling errors
 app.use((req, res, next) => {
   next(createError(404))
 })
