@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Unity = require('./unity.model')
 
 const classRoomSchema = new mongoose.Schema({
   name: {
@@ -13,11 +14,11 @@ const classRoomSchema = new mongoose.Schema({
     required: 'Text is required',
     minlength: [50, 'Minimun 50 characters, dont be lazy!! ;)'],
   },
-  teacher: [{ //? multiple teachers per ClassRoom. 
+  teacher: { //? multiple teachers per ClassRoom. 
     type: mongoose.Types.ObjectId,
     ref: 'User',
     required: true
-  }],
+  },
   rating: { //* rating from all ClassRooms
     type: Number, 
     default: 0
@@ -34,7 +35,7 @@ const classRoomSchema = new mongoose.Schema({
   },
 });
 //* virtual field: help for populate
-ClassRoom.virtual('members', {
+classRoomSchema.virtual('members', {
   ref: 'Unity', // The model to use
   localField: '_id', // Find people where `localField`
   foreignField: 'classRoom', // is equal to `foreignField`

@@ -36,7 +36,7 @@ app.use('/', authRouter);
 app.use('/users', userRouter);
 app.use('/friends', secure.isAuthenticated, friendRouter)
 app.use('/class-rooms', classRoomRouter);
-// app.use('/class-rooms/:classRoomId/unities', unityRouter);
+app.use('/class-rooms/:classRoomId/unities', unityRouter);
 // ? cuando este listo firebase. 
 // app.use('/unities/:unityId/messages', messageRouter);
 
