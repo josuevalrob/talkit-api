@@ -9,6 +9,11 @@ const unitySchema = new mongoose.Schema({
     type: Number, 
     default: 0
   },
+  owner: { // ? multiple teachers per session. 
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   numUserRating: Number,
   description: {
     type: String,

@@ -19,7 +19,6 @@ module.exports.isTeacher = (req, res, next) => {
 
 module.exports.isOwner = (req, res, next) => {
   // ! this function should be more generic. 
-  console.log(req)
   ClassRoom.findById(req.params.classRoomId)
     .then(clazz => {
       if(clazz.owner && clazz.owner == req.user.id){

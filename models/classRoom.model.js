@@ -14,7 +14,7 @@ const classRoomSchema = new mongoose.Schema({
     required: 'Text is required',
     minlength: [50, 'Minimun 50 characters, dont be lazy!! ;)'],
   },
-  owner: { // ? multiple teachers per ClassRoom. 
+  owner: { // ? multiple teachers per session
     type: mongoose.Types.ObjectId,
     ref: 'User',
     required: true

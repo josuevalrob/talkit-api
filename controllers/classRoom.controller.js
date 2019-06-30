@@ -28,7 +28,7 @@ module.exports.detail = (req, res, next) => {
     .then(classRoom => {
       res.status(201).json(classRoom)
     })
-    .catch()
+    .catch(next)
 }
 
 module.exports.update = (req, res, next) => {
