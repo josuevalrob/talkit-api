@@ -7,7 +7,7 @@ module.exports.register = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (user) {
-        throw createError(409, 'Email already registered')
+        throw createError(409, {message:'Email already registered'})
       } else {
         return new User(req.body).save();
       }
@@ -38,9 +38,9 @@ module.exports.update = (req, res, next) => {
   delete req.body.email; //never update the mail. 
   const user = req.user;
   Object.assign(user, req.body); //<-
-  // if (req.file) user.avatarURL = req.file.secure_url;
+  if (req.file) user.avatarURL = req.file.secure_url;
   user.save()
-    .then(user => res.status(204).json(user))
+    .then(user => res.status(201).json(user))
     .catch(error => {
       next(error);
     });

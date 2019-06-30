@@ -14,12 +14,12 @@ const classRoomSchema = new mongoose.Schema({
     required: 'Text is required',
     minlength: [50, 'Minimun 50 characters, dont be lazy!! ;)'],
   },
-  teacher: { //? multiple teachers per ClassRoom. 
+  owner: { // ? multiple teachers per ClassRoom. 
     type: mongoose.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  rating: { //* rating from all ClassRooms
+  rating: { // * rating from all students
     type: Number, 
     default: 0
   }
@@ -35,7 +35,7 @@ const classRoomSchema = new mongoose.Schema({
   },
 });
 //* virtual field: help for populate
-classRoomSchema.virtual('members', {
+classRoomSchema.virtual('unities', {
   ref: 'Unity', // The model to use
   localField: '_id', // Find people where `localField`
   foreignField: 'classRoom', // is equal to `foreignField`

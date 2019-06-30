@@ -7,9 +7,9 @@ const classRoomController = require('../controllers/classRoom.controller');
 //* /class-rooms
 router.get('/', classRoomController.showAll); //* all class
 //* CRUD
-router.post('/:classRoomId', sc.isAuthenticated, classRoomController.create);
+router.post('/', sc.isAuthenticated, classRoomController.create);
 router.get('/:classRoomId', classRoomController.detail); 
 router.put('/:classRoomId', sc.isAuthenticated, classRoomController.update); 
-router.delete('/:classRoomId', sc.isAuthenticated, classRoomController.delete);
+router.delete('/:classRoomId', sc.isAuthenticated, sc.isOwner,classRoomController.delete);
 
 module.exports = router;

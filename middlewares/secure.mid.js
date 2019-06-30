@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const Participants = require('./../models/participants.model')
-
+const ClassRoom = require('./../models/classRoom.model')
 module.exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
@@ -15,6 +15,21 @@ module.exports.isTeacher = (req, res, next) => {
   } else {
     next(createError(401));
   }
+}
+
+module.exports.isOwner = (req, res, next) => {
+  // ! this function should be more generic. 
+  console.log(req)
+  ClassRoom.findById(req.params.classRoomId)
+    .then(clazz => {
+      if(clazz.owner && clazz.owner == req.user.id){
+        req.classRoom = clazz // ? save the query...
+        next(); 
+      } else {
+        next(createError(401));
+      }
+    })
+    .catch(next)
 }
 
 module.exports.hasAccess = (req, res, next) => {
