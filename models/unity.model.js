@@ -9,18 +9,21 @@ const unitySchema = new mongoose.Schema({
     type: Number, 
     default: 0
   },
-  owner: { // ? multiple teachers per session. 
-    type: mongoose.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
+  // owner: { // ? multiple teachers per session. 
+  //   type: mongoose.Types.ObjectId,
+  //   ref: 'User',
+  //   required: true
+  // },
   numUserRating: Number,
   description: {
     type: String,
     required: 'Text is required',
     minlength: [50, 'Minimun 50 characters, dont be lazy!! ;)'],
   },
-  classRoom: { type: mongoose.Schema.Types.ObjectId, ref: 'ClassRoom'},
+  classRoom: { 
+    type: mongoose.Schema.Types.ObjectId, ref: 'ClassRoom',
+    required: true
+  },
   markDown: {
     type: String, 
     minlength: [140, 'Dude, write at least one tweet. about this. . . ']
@@ -30,9 +33,8 @@ const unitySchema = new mongoose.Schema({
   }], 
   price: { //* a lesson has a price. 
     // TODO:  you have to be accepted. 
-    type: String,
-    required: true,
-    default: '0.00€' //* if is 0, is free. 
+    type: Number,
+    default: 0 //* if is 0, is free. 
     ////match: regex,
   },
   // participants:[{
@@ -51,6 +53,14 @@ const unitySchema = new mongoose.Schema({
     }
   }
 })
+
+unitySchema.virtual('ratings', {
+  ref: 'Rating', // The model to use
+  localField: '_id', // ? Find people where `localField`
+  foreignField: 'rateable', // is equal to `foreignField`
+  options: { sort: { createdAt: -1 } } 
+});
+
 
 const Unity = mongoose.model('Unity', unitySchema);
 module.exports = Unity;

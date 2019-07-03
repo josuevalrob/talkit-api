@@ -34,12 +34,21 @@ const classRoomSchema = new mongoose.Schema({
     }
   },
 });
-//* virtual field: help for populate
+
 classRoomSchema.virtual('unities', {
   ref: 'Unity', // The model to use
   localField: '_id', // Find people where `localField`
   foreignField: 'classRoom', // is equal to `foreignField`
   options: { sort: { createdAt: -1 } } 
 });
+
+classRoomSchema.virtual('ratings', {
+  ref: 'Rating', // The model to use
+  localField: '_id', // Find people where `localField`
+  foreignField: 'rateable', // is equal to `foreignField`
+  options: { sort: { createdAt: -1 } } 
+});
+
+
 const ClassRoom = mongoose.model('ClassRoom', classRoomSchema);
 module.exports = ClassRoom;

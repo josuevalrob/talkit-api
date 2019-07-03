@@ -24,7 +24,7 @@ module.exports.create = (req, res, next) => {
 module.exports.detail = (req, res, next) => {
   ClassRoom.findById(req.params.classRoomId)
     .populate('owner') 
-    //TODO: .populate('unities')
+    .populate('unities')
     .then(classRoom => {
       res.status(201).json(classRoom)
     })
@@ -36,30 +36,32 @@ module.exports.update = (req, res, next) => {
  * ? From who and what can you update?
  * * By the teacher
  *   add new Unities
- *   //add more Teachers
- * * By students. 
- *   Rating
- * ? Can I do both in the same controller?
+ *  // By students. 
+ *  // Rating
  */
   const id = req.params.classRoomId
-  ClassRoom.findByIdAndUpdate(id, req.body, { new: true, runValidators: true })
-    .then(clazz => {
+  ClassRoom.findOneAndUpdate(
+    {_id: id, owner: req.user.id}, 
+    req.body, 
+    { new: true, runValidators: true }
+  ).then(clazz => {
       if (clazz) {
         res.status(201).json(clazz)
       } else {
-        next(createError(404, 'user not found'))
+        next(createError(404, 'clazz not found'))
       } 
     })
     .catch(next)
 }
 
 module.exports.delete = (req, res, next) => {
-  // ! The only one who can DELETE this is the owner. 
-  // // ? Should it be in a secure middleware??    
-  req.classRoom.remove()
-    .then((dead)=>{
-      console.log(dead)
-      res.status(204).json()
+  ClassRoom.findOneAndDelete({_id : req.params.classRoomId, owner: req.user.id})
+    .then(clazz => {
+      if (!clazz) {
+        throw createError(404, 'Class room not found')
+      }
+      return Unity.remove({ classRoom: req.params.classRoomId })
     })
+    .then(() => res.status(204).send())
     .catch(next)
 }

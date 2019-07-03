@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 
 const participantsSchema = new mongoose.Schema({
-  student: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}], 
-  teacher: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  student: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}, 
+  // teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   unity: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'unity',
     unique: true,
   },
-  accepted: {type: Boolean, default: false}
+  enabled: {type: Boolean, default: false} //? string
+  // *add more data from the payment. 
 }, {
   timestamps: true,
   toJSON: {
