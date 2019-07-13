@@ -14,10 +14,15 @@ module.exports.showAll = (req, res, next) => {
 }
 
 module.exports.create = (req, res, next) => {  
+      console.log('creating class')
+
   req.body.owner = req.user.id
   new ClassRoom(req.body)
     .save()
-    .then(classRoom => res.status(201).json(classRoom))
+    .then(classRoom => {
+      console.log('created class')
+      res.status(201).json(classRoom)
+    })
     .catch(next)
 }
 
