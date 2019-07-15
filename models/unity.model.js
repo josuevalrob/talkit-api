@@ -24,6 +24,7 @@ const unitySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, ref: 'ClassRoom',
     required: true
   },
+  notesTitle: String,
   markDown: {
     type: String, 
     minlength: [140, 'Dude, write at least one tweet. about this. . . ']

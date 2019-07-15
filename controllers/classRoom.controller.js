@@ -20,7 +20,6 @@ module.exports.create = (req, res, next) => {
   new ClassRoom(req.body)
     .save()
     .then(classRoom => {
-      console.log('created class')
       res.status(201).json(classRoom)
     })
     .catch(next)
