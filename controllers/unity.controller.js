@@ -56,7 +56,20 @@ module.exports.create = (req, res, next) => {
     .catch(next)
 }
 
-module.exports.detial = (req, res, next) => {
+module.exports.detail = (req, res, next) => {
+  Unity.findById(req.params.unityId)
+    .then(unity=>{
+      if(!unity){
+        throw createError(404, 'Unity do not found')
+      } else {
+        console.log(unity)
+        res.status(200).json(unity)
+      }
+    })
+    .catch(next)
+}
+
+module.exports.participants = (req, res, next) => {
   // ? Search by participants to get the students and the teachers
   Participants.find({unity: req.params.unityId})
     .populate('teacher')
@@ -66,6 +79,7 @@ module.exports.detial = (req, res, next) => {
       if(!unity){
         throw createError(404, 'Unity do not found')
       } else {
+        console.log(unity)
         res.status(200).json(unity)
       }
     })

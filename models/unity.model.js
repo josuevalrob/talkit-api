@@ -24,11 +24,13 @@ const unitySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, ref: 'ClassRoom',
     required: true
   },
-  notesTitle: String,
-  markDown: {
-    type: String, 
-    minlength: [140, 'Dude, write at least one tweet. about this. . . ']
-  },
+  notes: [{
+    notesTitle: String,
+    markDown: {
+      type: String, 
+      minlength: [140, 'Dude, write at least one tweet. about this. . . ']
+    }
+  }],
   resources: [{ //? qué se guarda aquí, una ULR?
     type: String
   }], 
@@ -38,6 +40,10 @@ const unitySchema = new mongoose.Schema({
     default: 0 //* if is 0, is free. 
     ////match: regex,
   },
+  isPrivate: {
+    type: Boolean, 
+    default: false
+  }
   // participants:[{
   //   type: mongoose.Types.ObjectId,
   //   ref: 'User', 
