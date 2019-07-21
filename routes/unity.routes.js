@@ -9,7 +9,10 @@ const unityController = require('../controllers/unity.controller')
 // // //* CRUD
 router.post('/', sc.isAuthenticated, sc.isTeacher, unityController.create);
 router.get('/:unityId', sc.isAuthenticated, sc.hasAccess, unityController.detail);
-router.get('/:unityId', sc.isAuthenticated, sc.hasAccess, unityController.participants); //* access
+
+router.get('/', unityController.showAll);
+
+// router.get('/:unityId', sc.isAuthenticated, sc.hasAccess, unityController.participants); //* access
 router.put('/:unityId', sc.isAuthenticated, sc.isTeacher, unityController.update);
 router.delete('/:unityId', sc.isAuthenticated, unityController.delete);
 

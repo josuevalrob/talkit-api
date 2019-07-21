@@ -43,12 +43,13 @@ module.exports.join = (req, res, next) => {
 
 module.exports.create = (req, res, next) => {
   const cId = req.params.classRoomId 
-  ClassRoom.find({_id: cId, owner: req.body.owner})
+  ClassRoom.find({_id: cId})
     .then(clazz => {
       if(!clazz){
         throw createError(404, 'Classroom not found')
       } else {
         req.body.classRoom =  cId
+        req.body.owner =  req.user.id
         console.log(req.body)
         return new Unity(req.body).save()
       }
@@ -65,6 +66,19 @@ module.exports.detail = (req, res, next) => {
       } else {
         console.log(unity)
         res.status(200).json(unity)
+      }
+    })
+    .catch(next)
+}
+
+module.exports.showAll = (req, res, next) => {
+  const {classRoomId} = req.params
+  Unity.find({classRoom:classRoomId})
+    .then(unities => {
+      if(unities.length){
+        res.status(200).json(unities)
+      } else {
+        res.status(200).json({message:'There are not unities for this classroom'})
       }
     })
     .catch(next)
@@ -99,7 +113,7 @@ module.exports.update = (req, res, next) => {
   const cId = req.params.classRoomId
   Unity.findOneAndUpdate(
     // * just can be updated by the owner.
-    {_id: id}, //Search params
+    {_id: uId}, //Search params
     req.body, //body update
     { new: true, runValidators: true }) //options
     .then(unity => {
