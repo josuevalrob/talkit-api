@@ -44,11 +44,12 @@ module.exports.update = (req, res, next) => {
  *  // Rating
  */
   const id = req.params.classRoomId
+  req.body.owner = req.user.id
   ClassRoom.findOneAndUpdate(
-    {_id: id, owner: req.user.id}, 
+    {_id: id}, 
     req.body, 
-    { new: true, runValidators: true }
-  ).then(clazz => {
+    { new: true, runValidators: true, useFindAndModify: false })
+  .then(clazz => {
       if (clazz) {
         res.status(201).json(clazz)
       } else {

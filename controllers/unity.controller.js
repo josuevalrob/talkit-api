@@ -49,6 +49,7 @@ module.exports.create = (req, res, next) => {
         throw createError(404, 'Classroom not found')
       } else {
         req.body.classRoom =  cId
+        console.log(req.body)
         return new Unity(req.body).save()
       }
     })
