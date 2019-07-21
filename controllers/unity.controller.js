@@ -128,11 +128,12 @@ module.exports.update = (req, res, next) => {
 
 module.exports.delete = (req, res, next) => {
   // ! The only one who can DELETE this is the owner. 
-  Unity.findOneAndDelete({_id : req.params.classRoomId, owner: req.user.id})
+  Unity.findOneAndDelete({_id : req.params.unityId})
     .then(unity => {
       if(!unity){
         throw createError(404, 'Unity not found')
       }else {
+        console.log('found')        
         return unity.remove()
       }
     })
